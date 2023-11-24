@@ -1,5 +1,6 @@
 # coding: utf-8
 # license: GPLv3
+# Булатех 
 
 import pygame as pg
 import thorpy
