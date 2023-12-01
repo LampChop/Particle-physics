@@ -1,94 +1,19 @@
-# coding: utf-8
-# license: GPLv3
-
-
-class Star:
-    """Тип данных, описывающий звезду.
-    Содержит массу, координаты, скорость звезды,
-    а также визуальный радиус звезды в пикселах и её цвет.
-    """
-
-    type = "star"
-    """Признак объекта звезды"""
-
-    m = 1
-    """Масса звезды"""
-
+import pygame as pg
+class particle:
     x = 0
-    """Координата по оси **x**"""
-
     y = 0
-    """Координата по оси **y**"""
-
-    Vx = 0
-    """Скорость по оси **x**"""
-
-    Vy = 0
-    """Скорость по оси **y**"""
-
-    Fx = 0
-    """Сила по оси **x**"""
-
-    Fy = 0
-    """Сила по оси **y**"""
-
-    R = 5
-    """Радиус звезды"""
-
-    color = "red"
-    """Цвет звезды"""
-    def __init__(self, mass, x, y, Vx, Vy, R, color):
-        self.m = mass
+    vx = 0
+    vy = 0
+    color = (255, 255, 255)
+    def __init__(self, x, y, vx, vy, color):
         self.x = x
         self.y = y
-        self.Vx = Vx
-        self.Vy = Vy
-        self.R = R
-        self.color = color
-
-
-
-class Planet:
-    """Тип данных, описывающий планету.
-    Содержит массу, координаты, скорость планеты,
-    а также визуальный радиус планеты в пикселах и её цвет
-    """
-
-    type = "planet"
-    """Признак объекта планеты"""
-
-    m = 1
-    """Масса планеты"""
-
-    x = 0
-    """Координата по оси **x**"""
-
-    y = 0
-    """Координата по оси **y**"""
-
-    Vx = 0
-    """Скорость по оси **x**"""
-
-    Vy = 0
-    """Скорость по оси **y**"""
-
-    Fx = 0
-    """Сила по оси **x**"""
-
-    Fy = 0
-    """Сила по оси **y**"""
-
-    R = 5
-    """Радиус планеты"""
-
-    color = "green"
-    """Цвет планеты"""
-
-    def __init__(self, mass, x, y, Vx, Vy, R, color):
-        self.m = mass
-        self.x = x
-        self.y = y
-        self.Vx = Vx
-        self.Vy = Vy
-        self.R = R
-        self.color = color
+        self.vx = vx
+        self.vy = vy
+    def draw(self, screen):
+        pg.draw.circle(
+            screen,
+            self.color,
+            (self.x, self.y),
+            5
+        )
