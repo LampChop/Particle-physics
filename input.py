@@ -1,6 +1,6 @@
 # coding: utf-8
 # license: GPLv3
-
+# Matthew Sucks
 from solar_objects import Star, Planet
 from solar_vis import DrawableObject
 
