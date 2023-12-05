@@ -23,15 +23,11 @@ def calculate_force(body, space_objects):
 def move(particle, dt):
     particle.x += particle.vx * dt
     particle.y += particle.vy * dt
-    if particle.x >= window_width:
-        particle.x -= 2 * (particle.x - window_width)
+    if particle.x >= window_width - particle.r:
         particle.vx *= -1
-    if particle.x <= 0:
-        particle.x -= 2 * particle.x
+    if particle.x <= particle.r:
         particle.vx *= -1
-    if particle.y >= window_height:
-        particle.y -= 2 * (particle.y - window_height)
+    if particle.y >= window_height - particle.r:
         particle.vy *= -1
-    if particle.y <= 0:
-        particle.y -= 2*particle.y
+    if particle.y <= particle.r:
         particle.vy *= -1
