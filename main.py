@@ -85,6 +85,9 @@ def main():
         for p in particles:
             p.draw(screen)
             move(p, 0.05)
+            for other in particles:
+                if p != other:
+                    p.check_collision(other)
 
         pygame.display.update()
         screen.fill((0, 0, 0))
