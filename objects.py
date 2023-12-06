@@ -4,16 +4,20 @@ class particle:
     y = 0
     vx = 0
     vy = 0
+    r = 5
+    mass = 1
     color = (255, 255, 255)
-    def __init__(self, x, y, vx, vy, color):
+    def __init__(self, x, y, vx, vy, color, r, mass):
         self.x = x
         self.y = y
         self.vx = vx
         self.vy = vy
+        self.r = r
+        self.mass = mass
     def draw(self, screen):
         pg.draw.circle(
             screen,
             self.color,
             (self.x, self.y),
-            5
+            self.r
         )
