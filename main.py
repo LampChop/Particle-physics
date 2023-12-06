@@ -72,6 +72,7 @@ from modelling import *
 #     return menu, box, timer
 #FIXME make ui
 white = (255, 255, 255)
+bunch = 10 #сколько частиц фигачим за раз
 particles = []
 particles.append(particle(400, 250, -10, 10, white, 5, 1))
 def main():
@@ -94,6 +95,7 @@ def main():
                 if event.button == 1:
                     mouse_pos = event.pos
                     print(mouse_pos[0])
-                    particles.append(particle(mouse_pos[0], mouse_pos[1], rnd.randint(-15, 15), rnd.randint(-15, 15), white, 5, 1))
+                    for i in range(bunch): #сколько частиц фигачим за раз
+                        particles.append(particle(mouse_pos[0], mouse_pos[1], rnd.randint(-15, 15), rnd.randint(-15, 15), white, 5, 1))
 
 main()
