@@ -31,3 +31,5 @@ def move(particle, dt):
         particle.vy *= -1
     if particle.y <= particle.r:
         particle.vy *= -1
+def collision(p1, p2): #Прописать столкновение. Столкнувшиеся частицы на один фрейм меняют цвет немного, было бы прикольно
+    pass
