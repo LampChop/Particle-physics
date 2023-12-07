@@ -1,5 +1,5 @@
 from visualization import *
-
+import math
 
 def calculate_force(body, space_objects):
     """Вычисляет силу, действующую на тело.
@@ -31,5 +31,39 @@ def move(particle, dt):
         particle.vy *= -1
     if particle.y <= particle.r:
         particle.vy *= -1
-def collision(p1, p2): #Прописать столкновение. Столкнувшиеся частицы на один фрейм меняют цвет немного, было бы прикольно
-    pass
+        
+        
+
+def check_collision(p1, p2):
+    dx = p2.x - p1.x
+    dy = p2.y - p1.y
+    distance = math.sqrt(dx * dx + dy * dy)
+
+    if distance < p1.r + p2.r and distance != 0:
+        nx = dx / distance
+        ny = dy / distance
+        relative_velocity = [p2.vx - p1.vx, p2.vy - p1.vy]
+        vel_along_normal = relative_velocity[0] * nx + relative_velocity[1] * ny
+
+        if vel_along_normal > 0:
+            # Частицы летят в разные стороны и все норм
+            return
+
+        e = 1  # коэффициент упругости
+
+        j = -(1 + e) * vel_along_normal
+        j /= 1 / p1.mass + 1 / p2.mass
+
+        impulse = [j * nx, j * ny]
+
+        p1.vx -= 1 / p1.mass * impulse[0]
+        p1.vy -= 1 / p1.mass * impulse[1]
+        p2.vx += 1 / p2.mass * impulse[0]
+        p2.vy += 1 / p2.mass * impulse[1]
+
+        # SРазъединяем частицы чтобы они не слиплись
+        overlap = p1.r + p2.r - distance
+        p1.x -= overlap / 2 * nx
+        p1.y -= overlap / 2 * ny
+        p2.x += overlap / 2 * nx
+        p2.y += overlap / 2 * ny
