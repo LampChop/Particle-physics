@@ -1,9 +1,12 @@
 import pygame
 import numpy as np
-import numpy.random as rnd
+import random as rnd
 from visualization import *
 from objects import *
 from modelling import *
+
+white = (255, 255, 255)
+
 # def execution(delta):
 #     """Функция исполнения -- выполняется циклически, вызывая обработку всех небесных тел,
 #     а также обновляя их положение на экране.
@@ -71,15 +74,15 @@ from modelling import *
 #     box.update()
 #     return menu, box, timer
 #FIXME make ui
-white = (255, 255, 255)
-bunch = 10 #сколько частиц фигачим за раз
+
+bunch = 1 #сколько частиц фигачим за раз
 particles = []
-particles.append(particle(400*scale_factor, 250*scale_factor, -10*scale_factor, 10*scale_factor, white, 5*scale_factor, 1))
+particles.append(particle(400, 250, -10/100, 10/100, 5, 1, rnd.randrange(-15, 15, 4), 0, 0))
 def main():
     screen = pygame.display.set_mode((window_width, window_height))
     pygame.display.set_caption('particles')
     pygame.display.flip()
-    running = False
+    running = True
     while running:
 
         for p in particles:
@@ -87,7 +90,8 @@ def main():
             move(p, 0.05)
             for other in particles:
                 if p != other:
-                    check_collision(p, other)
+                    p.check_collision(other)
+
 
         pygame.display.update()
         screen.fill((0, 0, 0))
@@ -99,8 +103,7 @@ def main():
                     mouse_pos = event.pos
                     print(mouse_pos[0])
                     for i in range(bunch): #сколько частиц фигачим за раз
-                        particles.append(particle(mouse_pos[0]*scale_factor, mouse_pos[1]*scale_factor,
-                                                  rnd.randint(-15, 15)*scale_factor, rnd.randint(-15, 15)*scale_factor,
-                                                  white, 5*scale_factor, 1))
+                        particles.append(particle(mouse_pos[0], mouse_pos[1], rnd.randint(-15, 15)/100, rnd.randint(-15, 15)/100, 5, 1, rnd.randrange(-15, 15, 4), 0, 0))
 
+        recalculate_particles_positions(particles, 0.05)
 main()
