@@ -1,5 +1,7 @@
 import pygame as pg
-import math
+from visualization import *
+
+
 class particle:
     x = 0
     y = 0
@@ -7,21 +9,28 @@ class particle:
     vy = 0
     r = 5
     mass = 1
-    q = 1
+    color = [255, 255, 255]
     Fx = 0
     Fy = 0
-    def __init__(self, x, y, vx, vy, r, mass, q, Fx, Fy):
+
+    def __init__(self, x, y, vx, vy, r, mass, q, color, Fx, Fy):
         self.x = x
         self.y = y
         self.vx = vx
         self.vy = vy
-        red = (220, 20, 60)
-        blue = (70, 130, 180)
         self.q = q
-        if q > 0:
-            self.color = red
+        red = [220, 20, 60]
+        blue = [70, 130, 180]
+        white = [255, 255, 255]
+        if color is None:
+            if q > 0:
+                self.color = red
+            if q < 0:
+                self.color = blue
+            if q == 0:
+                self.color = white
         else:
-            self.color = blue
+            self.color = color
         self.r = r
         self.mass = mass
         self.Fx = Fx
@@ -30,41 +39,7 @@ class particle:
     def draw(self, screen):
         pg.draw.circle(
             screen,
-            self.color,
-            (self.x, self.y),
-            self.r
+            (self.color[0], self.color[1], self.color[2]),  # Теперь цвет это кортеж, который мы можем изменять
+            (self.x / scale_factor, self.y / scale_factor),
+            self.r / scale_factor
         )
-
-    def check_collision(self, other_particle):
-        dx = other_particle.x - self.x
-        dy = other_particle.y - self.y
-        distance = math.sqrt(dx * dx + dy * dy)
-
-        if distance < self.r + other_particle.r:
-            nx = dx / distance
-            ny = dy / distance
-            relative_velocity = [other_particle.vx - self.vx, other_particle.vy - self.vy]
-            vel_along_normal = relative_velocity[0] * nx + relative_velocity[1] * ny
-
-            if vel_along_normal > 0:
-                # Частицы летят в разные стороны и все норм
-                return
-
-            e = 1  # коэффициент упругости
-
-            j = -(1 + e) * vel_along_normal
-            j /= 1 / self.mass + 1 / other_particle.mass
-
-            impulse = [j * nx, j * ny]
-
-            self.vx -= 1 / self.mass * impulse[0]
-            self.vy -= 1 / self.mass * impulse[1]
-            other_particle.vx += 1 / other_particle.mass * impulse[0]
-            other_particle.vy += 1 / other_particle.mass * impulse[1]
-
-            # Разъединяем частицы чтобы они не слиплись
-            overlap = self.r + other_particle.r - distance
-            self.x -= overlap / 2 * nx
-            self.y -= overlap / 2 * ny
-            other_particle.x += overlap / 2 * nx
-            other_particle.y += overlap / 2 * ny
