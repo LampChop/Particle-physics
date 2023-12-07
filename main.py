@@ -79,7 +79,7 @@ def main():
     screen = pygame.display.set_mode((window_width, window_height))
     pygame.display.set_caption('particles')
     pygame.display.flip()
-    running = True
+    running = False
     while running:
 
         for p in particles:

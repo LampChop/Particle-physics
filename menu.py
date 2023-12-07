@@ -31,7 +31,7 @@ class Menu:
 
     def select(self):
         self._callbacks[self._current_option_index]()
-running = True
+running_menu = True
 
 menu = Menu()
 menu.append_option('Начать', lambda: print('Начать'))
@@ -40,10 +40,10 @@ menu.append_option('Настройки', lambda: print('Настройки'))
 menu.append_option('Авторы', lambda: print('НБМ'))
 menu.append_option('Выход', quit)
 
-while running:
+while running_menu:
     for e in event.get():
         if e.type == QUIT:
-            running = False
+            running_menu = False
         elif e.type == KEYDOWN:
             if e.key == K_w:
                 menu.switch(-1)

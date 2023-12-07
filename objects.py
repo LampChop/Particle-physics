@@ -5,7 +5,7 @@ class particle:
     y = 0
     vx = 0
     vy = 0
-    r = 500.
+    r = 500
     mass = 1
     color = (255, 255, 255)
     def __init__(self, x, y, vx, vy, color, r, mass):
