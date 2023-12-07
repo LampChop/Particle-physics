@@ -25,13 +25,13 @@ def calculate_force(particle, particles):
         dy = obj.y - particle.y
         sin = dy / r
         cos = dx / r
-        F = (-1 * k * (particle.q) * (obj.q)) / (r ** 2)
+        F = (k * (particle.q) * (obj.q)) / (r ** 2)
         particle.Fx += F * cos
         particle.Fy += F * sin
 
 def move_object(particle, dt):
-    ax = particle.Fx / abs(particle.q)
-    ay = particle.Fy / abs(particle.q)
+    ax = particle.Fx / particle.q
+    ay = particle.Fy / particle.q
     particle.vx += ax * dt
     particle.vy += ay * dt
     particle.y += particle.vy * dt
