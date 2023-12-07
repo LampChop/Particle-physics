@@ -74,7 +74,6 @@ bunch = 1 # сколько частиц фигачим за раз
 radii = [5]  # введите массы в нужном соотношении
 charges = [-10, 10, 2]
 x_velocities = y_velocities = [-5, 5]
-mass_to_radius = scale_factor
 particles = []
 
 
