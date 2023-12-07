@@ -5,8 +5,6 @@ from visualization import *
 from objects import *
 from modelling import *
 
-white = (255, 255, 255)
-
 # def execution(delta):
 #     """Функция исполнения -- выполняется циклически, вызывая обработку всех небесных тел,
 #     а также обновляя их положение на экране.
@@ -19,8 +17,7 @@ white = (255, 255, 255)
 #     model_time += delta
 
 
-
-#FIXME make open file
+# FIXME make open file
 
 # def open_file():
 #     """Открывает диалоговое окно выбора имени файла и вызывает
@@ -36,8 +33,6 @@ white = (255, 255, 255)
 #     space_objects = read_space_objects_data_from_file(in_filename)
 #     max_distance = max([max(abs(obj.obj.x), abs(obj.obj.y)) for obj in space_objects])
 #     calculate_scale_factor(max_distance)
-
-
 
 
 # def init_ui(screen):
@@ -73,11 +68,17 @@ white = (255, 255, 255)
 #     box.blit()
 #     box.update()
 #     return menu, box, timer
-#FIXME make ui
-
-bunch = 1 #сколько частиц фигачим за раз
+# FIXME make ui
+white = [255, 255, 255]
+bunch = 1 # сколько частиц фигачим за раз
+radii = [5]  # введите массы в нужном соотношении
+charges = [-10, 10, 2]
+x_velocities = y_velocities = [-5, 5]
+mass_to_radius = scale_factor
 particles = []
-particles.append(particle(400, 250, -10/100, 10/100, 5, 1, rnd.randrange(-15, 15, 4), 0, 0))
+
+
+# particles.append(particle(400*scale_factor, 250*scale_factor, -10*scale_factor, 10*scale_factor, white, 5*scale_factor, 1, 0, 0))
 def main():
     screen = pygame.display.set_mode((window_width, window_height))
     pygame.display.set_caption('particles')
@@ -90,9 +91,7 @@ def main():
             move(p, 0.05)
             for other in particles:
                 if p != other:
-                    p.check_collision(other)
-
-
+                    check_collision(p, other)
         pygame.display.update()
         screen.fill((0, 0, 0))
         for event in pygame.event.get():
@@ -102,8 +101,14 @@ def main():
                 if event.button == 1:
                     mouse_pos = event.pos
                     print(mouse_pos[0])
-                    for i in range(bunch): #сколько частиц фигачим за раз
-                        particles.append(particle(mouse_pos[0], mouse_pos[1], rnd.randint(-15, 15)/100, rnd.randint(-15, 15)/100, 5, 1, rnd.randrange(-15, 15, 4), 0, 0))
+                    for i in range(bunch):  # сколько частиц фигачим за раз
+                        r = rnd.choice(radii)*scale_factor
+                        mass = rnd.choice(radii)
+                        particles.append(
+                            particle(mouse_pos[0]*scale_factor, mouse_pos[1]*scale_factor, rnd.choice(x_velocities)*scale_factor, rnd.choice(y_velocities)*scale_factor,
+                                     r, mass, rnd.randrange(charges[0], charges[1], charges[2]), None, 0, 0))
 
         recalculate_particles_positions(particles, 0.05)
+
+
 main()
