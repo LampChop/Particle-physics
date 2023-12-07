@@ -1,4 +1,6 @@
 import pygame
+import numpy as np
+import numpy.random as rnd
 from visualization import *
 from objects import *
 from modelling import *
@@ -69,22 +71,34 @@ from modelling import *
 #     box.update()
 #     return menu, box, timer
 #FIXME make ui
-
+white = (255, 255, 255)
+bunch = 10 #сколько частиц фигачим за раз
 particles = []
-particles.append(particle(400, 250, -10, 10, (255, 255, 255)))
+particles.append(particle(400, 250, -10, 10, white, 5, 1))
 def main():
     screen = pygame.display.set_mode((window_width, window_height))
     pygame.display.set_caption('particles')
     pygame.display.flip()
     running = True
     while running:
+
         for p in particles:
             p.draw(screen)
             move(p, 0.05)
-            print(p.x, p.y)
-            pygame.display.update()
-            screen.fill((0,0,0))
+            for other in particles:
+                if p != other:
+                    p.check_collision(other)
+
+        pygame.display.update()
+        screen.fill((0, 0, 0))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    mouse_pos = event.pos
+                    print(mouse_pos[0])
+                    for i in range(bunch): #сколько частиц фигачим за раз
+                        particles.append(particle(mouse_pos[0], mouse_pos[1], rnd.randint(-15, 15), rnd.randint(-15, 15), white, 5, 1))
+
 main()
