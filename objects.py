@@ -1,11 +1,11 @@
 import pygame as pg
-import math
+from visualization import *
 class particle:
     x = 0
     y = 0
     vx = 0
     vy = 0
-    r = 5
+    r = 500.
     mass = 1
     color = (255, 255, 255)
     def __init__(self, x, y, vx, vy, color, r, mass):
@@ -19,8 +19,8 @@ class particle:
         pg.draw.circle(
             screen,
             self.color,
-            (self.x, self.y),
-            self.r
+            (self.x/scale_factor, self.y/scale_factor),
+            self.r/scale_factor
         )
 
 

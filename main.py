@@ -74,7 +74,7 @@ from modelling import *
 white = (255, 255, 255)
 bunch = 10 #сколько частиц фигачим за раз
 particles = []
-particles.append(particle(400, 250, -10, 10, white, 5, 1))
+particles.append(particle(400*scale_factor, 250*scale_factor, -10*scale_factor, 10*scale_factor, white, 5*scale_factor, 1))
 def main():
     screen = pygame.display.set_mode((window_width, window_height))
     pygame.display.set_caption('particles')
@@ -99,6 +99,8 @@ def main():
                     mouse_pos = event.pos
                     print(mouse_pos[0])
                     for i in range(bunch): #сколько частиц фигачим за раз
-                        particles.append(particle(mouse_pos[0], mouse_pos[1], rnd.randint(-15, 15), rnd.randint(-15, 15), white, 5, 1))
+                        particles.append(particle(mouse_pos[0]*scale_factor, mouse_pos[1]*scale_factor,
+                                                  rnd.randint(-15, 15)*scale_factor, rnd.randint(-15, 15)*scale_factor,
+                                                  white, 5*scale_factor, 1))
 
 main()
