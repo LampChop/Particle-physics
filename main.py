@@ -106,7 +106,7 @@ while running:
         recalculate_particles_positions(particles, 0.001)
 
     while cat:
-        screen.blit(background_image_1, (0, 0))
+        screen.blit(background_image_1, (0, 54))
         pygame.display.update()
 
         for event in pygame.event.get():
