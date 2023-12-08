@@ -2,8 +2,13 @@ from typing import Any
 
 from visualization import *
 import math
-k = 50
-
+import numpy as np
+k = 80
+re = 50*scale_factor
+D = 1.5*scale_factor**3
+a = 4/scale_factor**2
+friction = 0.001
+e = 0.9
 segments_division = 1
 segments = [[j for j in range(segments_division)] for i in range(segments_division)]
 segment_width = window_width/segments_division*scale_factor
@@ -21,8 +26,8 @@ def move(particle, dt):
     # print(calculate_segment(particle))
     ax = particle.Fx / particle.mass
     ay = particle.Fy / particle.mass
-    particle.vx += ax * dt
-    particle.vy += ay * dt
+    particle.vx += ax * dt - particle.vx*friction
+    particle.vy += ay * dt - particle.vy*friction
     particle.y += particle.vy * dt
     particle.x += particle.vx * dt
     if particle.x >= window_width*scale_factor - particle.r:
@@ -47,11 +52,8 @@ def check_collision(p1, p2):
         dx = p2.x - p1.x
         dy = p2.y - p1.y
         distance = math.sqrt(dx * dx + dy * dy)
-        if distance < p1.r + p2.r and distance != 0:
-            print('collision happened')
-            # for i in range(3):
-            #     p1.color[i] = 0
-            #     p2.color[i] = 0
+        if distance < (p1.r + p2.r)/2 and distance != 0:
+            print(p1.x, 'collision')
             nx = dx / distance
             ny = dy / distance
             relative_velocity = [p2.vx - p1.vx, p2.vy - p1.vy]
@@ -61,7 +63,6 @@ def check_collision(p1, p2):
                 # Частицы летят в разные стороны и все норм
                 return
 
-            e = 1  # коэффициент упругости
 
             j = -(1 + e) * vel_along_normal
             j /= 1 / p1.mass + 1 / p2.mass
@@ -78,7 +79,7 @@ def check_collision(p1, p2):
             m2 = p2.mass
             k1 = m2/(m1 + m2)
             k2 = m1/(m1 + m2)
-            overlap = p1.r + p2.r - distance
+            overlap = (p1.r + p2.r)/2 - distance
             p1.x -= overlap * k1 * nx
             p1.y -= overlap * k1 * ny
             p2.x += overlap * k2 * nx
@@ -96,6 +97,7 @@ def calculate_force(particle, particles):
             sin = dy / r
             cos = dx / r
             F = scale_factor**3 * (-1 * k * particle.q * obj.q) / (r ** 2)
+            F += 2*D*(1 - np.exp(-a*(r-re)))*a*np.exp(-a*(r-re))
             particle.Fx += F * cos
             particle.Fy += F * sin
 
