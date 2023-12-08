@@ -32,3 +32,32 @@ class particle:
             (self.x / scale_factor, self.y / scale_factor),
             self.r / scale_factor
         )
+class magnet_field:
+    def __init__(self, tesla, orient):
+        self.x = 400
+        self.y = 300
+        self.tesla = tesla
+        self.orient = orient
+
+    def draw(self, screen):
+        if self.orient == 1:
+            pg.draw.line(screen, (255, 255, 255), [(self.x - 5), (self.y - 5)], [(self.x + 5), (self.y + 5)], 3)
+            pg.draw.line(screen, (255, 255, 255), [(self.x - 5), (self.y + 5)], [(self.x + 5), (self.y - 5)], 3)
+            pg.draw.circle(
+                screen,
+                (255, 255, 255),
+                (self.x, self.y), 10, 1
+            )
+        elif self.orient == -1:
+            pg.draw.circle(
+                screen,
+                (255, 255, 255),
+                (self.x, self.y), 10, 1
+            )
+            pg.draw.circle(
+                screen,
+                (255, 255, 255),
+                (self.x, self.y), 3,
+            )
+        elif self.orient == 0:
+            pass
