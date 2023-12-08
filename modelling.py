@@ -1,6 +1,6 @@
 from visualization import *
 import math
-k = 9
+k = 50
 
 
 def move(particle, dt):
@@ -72,12 +72,13 @@ def calculate_force(particle, particles):
     for obj in particles:
         if particle == obj:
             continue
-        r = ((particle.x/scale_factor - obj.x/scale_factor) ** 2 + (particle.y/scale_factor - obj.y/scale_factor) ** 2) ** 0.5 + scale_factor/2
-        dx = obj.x/scale_factor - particle.x/scale_factor
-        dy = obj.y/scale_factor - particle.y/scale_factor
+        r = ((particle.x - obj.x) ** 2 + (particle.y - obj.y) ** 2) ** 0.5 + scale_factor/2
+        dx = obj.x - particle.x
+        dy = obj.y - particle.y
         sin = dy / r
         cos = dx / r
-        F = (k * (particle.q) * (obj.q)) / (r ** 2)
+        F = scale_factor**3 *( (-1)* k * (particle.q) * (obj.q)) / (r ** 2)
+        print(F)
         particle.Fx += F * cos
         particle.Fy += F * sin
 
