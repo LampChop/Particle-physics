@@ -6,13 +6,14 @@ from objects import *
 from modelling import *
 from menu import *
 
-white = (255, 255, 255)
-bunch = 1  # сколько частиц фигачим за раз
-radii = [5, 10, 20]  # введите массы в нужном соотношении
-charges = [-10, 10, 2]
-x_velocities = y_velocities = [-5, 5]
-particles = []
+white = [255, 255, 255]
+bunch = 1 # сколько частиц фигачим за раз
 neutral = False
+radii = [10, 8]  # введите массы в нужном соотношении
+charges = [-1, 2, 2]
+x_velocities = y_velocities = [-1, 1]
+mass_to_radius = scale_factor
+particles = []
 count = 0
 background_image = pygame.image.load('шлепа.jpg')
 
@@ -92,15 +93,15 @@ while running:
                 if event.button == 1:
                     mouse_pos = event.pos
                     for i in range(bunch):  # сколько частиц фигачим за раз
-                        r = rnd.choice(radii) * scale_factor
                         mass = rnd.choice(radii)
+                        r = mass*scale_factor
+                        if mass > 9:
+                            charge = mass
+                        else:
+                            charge = -mass
                         particles.append(
-                            particle(mouse_pos[0] * scale_factor, mouse_pos[1] * scale_factor,
-                                     rnd.choice(x_velocities) * scale_factor,
-                                     rnd.choice(y_velocities) * scale_factor,
-                                     r, mass, 0 if neutral else rnd.randrange(charges[0], charges[1], charges[2]),
-                                     None, 0, 0))
-
+                            particle(mouse_pos[0]*scale_factor, mouse_pos[1]*scale_factor, rnd.choice(x_velocities)*scale_factor, rnd.choice(y_velocities)*scale_factor,
+                                     r, mass, 0 if neutral else charge, None, 0, 0))
         recalculate_particles_positions(particles, 0.001)
 
     while cat:
