@@ -15,7 +15,8 @@ x_velocities = y_velocities = [-1, 1]
 mass_to_radius = scale_factor
 particles = []
 count = 0
-background_image = pygame.image.load('шлепа.jpg')
+background_image_1 = pygame.image.load('шлепа.jpg')
+background_image_2 = pygame.image.load('authors.jpg')
 
 screen = pygame.display.set_mode((window_width, window_height))
 pygame.display.set_caption('particles')
@@ -105,7 +106,7 @@ while running:
         recalculate_particles_positions(particles, 0.001)
 
     while cat:
-        screen.blit(background_image, (0, 0))
+        screen.blit(background_image_1, (0, 0))
         pygame.display.update()
 
         for event in pygame.event.get():
@@ -123,12 +124,7 @@ while running:
             if event.type == pygame.QUIT:
                 pygame.quit()
 
-        screen.fill(white)
-        f2 = pygame.font.SysFont('serif', 60)
-        text2 = f2.render("НБМ", False,
-                          (0, 180, 130))
-
-        screen.blit(text2, (280, 230))
+        screen.blit(background_image_2, (0, 0))
         pygame.display.update()
 
         for event in pygame.event.get():
