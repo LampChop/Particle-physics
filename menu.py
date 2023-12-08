@@ -27,33 +27,10 @@ class Menu:
             surf.blit(option, option_rect)
 
     def switch(self, direction):
+        global _current_option_index
         self._current_option_index = max(0, min(self._current_option_index + direction, len(self._option_surfaces) - 1))
 
     def select(self):
         self._callbacks[self._current_option_index]()
-running_menu = True
 
-menu = Menu()
-menu.append_option('Начать', lambda: print('Начать'))
-menu.append_option('Мяу', lambda: print('Гав'))
-menu.append_option('Настройки', lambda: print('Настройки'))
-menu.append_option('Авторы', lambda: print('НБМ'))
-menu.append_option('Выход', quit)
 
-while running_menu:
-    for e in event.get():
-        if e.type == QUIT:
-            running_menu = False
-        elif e.type == KEYDOWN:
-            if e.key == K_w:
-                menu.switch(-1)
-            if e.key == K_s:
-                menu.switch(1)
-            elif e.key == K_SPACE:
-                menu.select()
-    screen.fill((0, 0, 0))
-
-    menu.draw(screen, 100, 100, 75)
-
-    display.flip()
-quit()
