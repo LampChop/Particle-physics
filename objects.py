@@ -1,18 +1,7 @@
 import pygame as pg
 from visualization import *
 
-
 class particle:
-    x = 0
-    y = 0
-    vx = 0
-    vy = 0
-    r = 5
-    mass = 1
-    color = [255, 255, 255]
-    Fx = 0
-    Fy = 0
-
     def __init__(self, x, y, vx, vy, r, mass, q, color, Fx, Fy):
         self.x = x
         self.y = y
