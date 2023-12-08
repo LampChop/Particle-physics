@@ -4,25 +4,70 @@ import random as rnd
 from visualization import *
 from objects import *
 from modelling import *
+from menu import *
 
- #создаем массив сегментов
-white = [255, 255, 255]
-bunch = 100 # сколько частиц фигачим за раз
-neutral = False
-radii = [5, 7, 9]  # введите массы в нужном соотношении
-charges = [-10, 10, 5]
-x_velocities = y_velocities = [-3, 3]
-mass_to_radius = scale_factor
+white = (255, 255, 255)
+bunch = 1  # сколько частиц фигачим за раз
+radii = [5, 10, 20]  # введите массы в нужном соотношении
+charges = [-10, 10, 2]
+x_velocities = y_velocities = [-5, 5]
 particles = []
+neutral = False
+count = 0
+background_image = pygame.image.load('шлепа.jpg')
 
+screen = pygame.display.set_mode((window_width, window_height))
+pygame.display.set_caption('particles')
+pygame.display.flip()
+running = True
+starting = True
+game_1 = True
+game_3 = True
+authors = True
+cat = True
 
-# particles.append(particle(400*scale_factor, 250*scale_factor, -10*scale_factor, 10*scale_factor, white, 5*scale_factor, 1, 0, 0))
-def main():
-    screen = pygame.display.set_mode((window_width, window_height))
-    pygame.display.set_caption('particles')
-    pygame.display.flip()
-    running = True
-    while running:
+menu = Menu()
+menu.append_option('Начать', lambda: print('Si'))
+menu.append_option('Мяу', lambda: print('Гав'))
+menu.append_option('Авторы', lambda: print('НБМ'))
+menu.append_option('Выход', quit)
+while running:
+    while starting:
+        screen.fill((0, 0, 0))
+
+        menu.draw(screen, 100, 100, 75)
+
+        for e in pygame.event.get():
+            if e.type == pygame.QUIT:
+                running = False
+            elif e.type == KEYDOWN:
+                if e.key == K_w:
+                    menu.switch(-1)
+                    count += 1
+                if e.key == K_s:
+                    menu.switch(1)
+                    count -= 1
+                elif e.key == K_SPACE:
+                    if count == 0:
+                        game_1 = True
+                        starting = False
+                    elif count == -1:
+                        cat = True
+                        game_1 = False
+                        starting = False
+                    elif count == -2:
+                        authors = True
+                        game_1 = False
+                        cat = False
+                        starting = False
+                    menu.select()
+
+        display.flip()
+
+    while game_1:
+
+        pygame.display.update()
+        screen.fill((0, 0, 0))
 
         for p in particles:
             p.draw(screen)
@@ -31,29 +76,66 @@ def main():
                 if p != other:
                     check_collision(p, other)
 
-        pygame.display.update()
-        screen.fill((0, 0, 0))
-
         for p in particles:
             pass
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
+                pygame.quit()
+            elif event.type == KEYDOWN:
+                if event.key == K_SPACE:
+                    starting = True
+                    game_1 = False
+                    authors = False
+                    cat = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     mouse_pos = event.pos
-                    print(mouse_pos[0])
                     for i in range(bunch):  # сколько частиц фигачим за раз
-                        r = rnd.choice(radii)*scale_factor
+                        r = rnd.choice(radii) * scale_factor
                         mass = rnd.choice(radii)
                         particles.append(
-                            particle(mouse_pos[0]*scale_factor, mouse_pos[1]*scale_factor, rnd.choice(x_velocities)*scale_factor, rnd.choice(y_velocities)*scale_factor,
-                                     r, mass, 0 if neutral else rnd.randrange(charges[0], charges[1], charges[2]), None, 0, 0))
+                            particle(mouse_pos[0] * scale_factor, mouse_pos[1] * scale_factor,
+                                     rnd.choice(x_velocities) * scale_factor,
+                                     rnd.choice(y_velocities) * scale_factor,
+                                     r, mass, 0 if neutral else rnd.randrange(charges[0], charges[1], charges[2]),
+                                     None, 0, 0))
 
-        recalculate_particles_positions(particles, 0.05)
+        recalculate_particles_positions(particles, 0.001)
+
+    while cat:
+        screen.blit(background_image, (0, 0))
+        pygame.display.update()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+            elif event.type == KEYDOWN:
+                if event.key == K_SPACE:
+                    starting = True
+                    authors = False
+                    cat = False
 
 
+    while authors:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
 
+        screen.fill(white)
+        f2 = pygame.font.SysFont('serif', 60)
+        text2 = f2.render("НБМ", False,
+                          (0, 180, 130))
 
-main()
+        screen.blit(text2, (280, 230))
+        pygame.display.update()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+            elif event.type == KEYDOWN:
+                if event.key == K_SPACE:
+                    starting = True
+                    authors = False
+
+pygame.quit()
