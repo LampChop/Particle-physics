@@ -117,7 +117,7 @@ while running:
         field.draw(screen)
 
     while cat:
-        screen.blit(background_image_1, (0, 0))
+        screen.blit(background_image_1, (0, 54))
         pygame.display.update()
 
         for event in pygame.event.get():
