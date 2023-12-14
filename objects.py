@@ -32,6 +32,8 @@ class particle:
             (self.x / scale_factor, self.y / scale_factor),
             self.r / scale_factor
         )
+
+
 class magnet_field:
     def __init__(self, tesla, orient):
         self.x = 400
@@ -59,5 +61,23 @@ class magnet_field:
                 (255, 255, 255),
                 (self.x, self.y), 3,
             )
+        elif self.orient == 0:
+            pass
+
+
+class E_field:
+    def __init__(self, e, orient):
+        self.e = e
+        self.orient = orient
+
+    def draw(self, screen):
+        if self.orient == -1:
+            pg.draw.line(screen, (255, 255, 255), [50, 50], [100, 50], 5)
+            pg.draw.line(screen, (255, 255, 255), [50, 50], [60, 60], 5)
+            pg.draw.line(screen, (255, 255, 255), [50, 50], [60, 40], 5)
+        elif self.orient == 1:
+            pg.draw.line(screen, (255, 255, 255), [50, 50], [100, 50], 5)
+            pg.draw.line(screen, (255, 255, 255), [100, 50], [90, 60], 5)
+            pg.draw.line(screen, (255, 255, 255), [100, 50], [90, 40], 5)
         elif self.orient == 0:
             pass
