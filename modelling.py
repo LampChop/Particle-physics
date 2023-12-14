@@ -100,24 +100,17 @@ def calculate_force(particle, particles):
             particle.Fy += F * sin
 
 def calculate_magnet_force(body, field):
-    """Вычисляет силу, действующую на тело.
-    Параметры:
-    **body** — тело, для которого нужно вычислить дейстующую силу.
-    **space_objects** — список объектов, которые воздействуют на тело.
-    """
     body.Fx += body.q*(body.vy/scale_factor)*(field.tesla*field.orient)
     body.Fy -= body.q*(body.vx/scale_factor)*(field.tesla*field.orient)
 
-    # if body.q * field.orient > 0:
-    #     body.Fy += -field.tesla * abs(body.q) * abs(body.vx / body.vy) * (body.vy / scale_factor)
-    #     body.Fx += field.tesla * abs(body.q) * abs(body.vy / body.vx) * (body.vx / scale_factor)
-    # elif body.q * field.orient < 0:
-    #     body.Fy += field.tesla * abs(body.q) * abs(body.vx / body.vy) * (body.vy / scale_factor)
-    #     body.Fx += -field.tesla * abs(body.q) * abs(body.vy / body.vx) * (body.vx / scale_factor)
-def recalculate_particles_positions(particles, field, dt):
+def calculate_e_force(body, e_field):
+    body.Fx += body.q * e_field.orient * e_field.e
+
+def recalculate_particles_positions(particles, field, e_field, dt):
     for particle in particles:
         calculate_force(particle, particles)
         calculate_magnet_force(particle, field)
+        calculate_e_force(particle, e_field)
     for particle in particles:
         move(particle, dt)
 
