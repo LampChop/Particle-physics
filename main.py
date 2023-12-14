@@ -36,12 +36,16 @@ menu.append_option('Начать', lambda: print('Si'))
 menu.append_option('Мяу', lambda: print('Гав'))
 menu.append_option('Авторы', lambda: print('НБМ'))
 menu.append_option('Выход', quit)
+'''Старт программы'''
 while running:
+    '''Меню'''
     while starting:
         screen.fill((0, 0, 0))
 
         menu.draw(screen, 100, 100, 75)
-
+        
+        '''Меняем выбор из опций меню и выбираем соответствующее окно кнопками'''
+        
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
                 running = False
@@ -68,16 +72,18 @@ while running:
                     menu.select()
 
         display.flip()
-
+        
+    '''При выборе Начать перекидывает в новый дисплей, где моделируем физика частиц'''
+    
     while game_1:
 
         pygame.display.update()
         screen.fill((0, 0, 0))
 
-        for p in particles:
+        for p in particles:   #частицы, положенные в массив, отрисовываются и делаются подвижными с их физикой
             p.draw(screen)
             move(p, 0.05)
-            for other in particles:
+            for other in particles:   #проверка на соударение и реализация
                 if p != other:
                     check_collision(p, other)
 
@@ -86,7 +92,10 @@ while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
-            elif event.type == KEYDOWN:
+
+            '''Будем менять характеристики поля в зависимости от нажатой кнопки'''
+            
+            elif event.type == KEYDOWN:   #логическое переобозначение, дабы вернуться в меню при нажатии на пробел
                 if event.key == K_SPACE:
                     starting = True
                     game_1 = False
@@ -110,11 +119,11 @@ while running:
                 if event.key == K_a:
                     e_field.orient = 0
                     e_field.e = 0
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.type == pygame.MOUSEBUTTONDOWN:   #создаем частицу
                 if event.button == 1:
                     mouse_pos = event.pos
                     for i in range(bunch):  # сколько частиц фигачим за раз
-                        mass = rnd.choice(radii)
+                        mass = rnd.choice(radii)   
                         r = mass*scale_factor
                         if mass > 9:
                             charge = mass
@@ -122,11 +131,13 @@ while running:
                             charge = -mass
                         particles.append(
                             particle(mouse_pos[0]*scale_factor, mouse_pos[1]*scale_factor, rnd.choice(x_velocities)*scale_factor, rnd.choice(y_velocities)*scale_factor,
-                                     r, mass, 0 if neutral else charge, None, 0, 0))
+                                     r, mass, 0 if neutral else charge, None, 0, 0))   #создаем частицу и кладем в массив
         recalculate_particles_positions(particles, field, e_field, 0.001)
         field.draw(screen)
         e_field.draw(screen)
 
+    '''При выборе Мяу перекидывает в дисплей с картинкой Шлепы'''
+    
     while cat:
         screen.blit(background_image_1, (0, 0))
         pygame.display.update()
@@ -134,13 +145,15 @@ while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
-            elif event.type == KEYDOWN:
+            elif event.type == KEYDOWN:   #логическое переобозначение, дабы вернуться в меню при нажатии на пробел
                 if event.key == K_SPACE:
                     starting = True
                     authors = False
                     cat = False
 
 
+    '''При выборе авторы перекидывает в дисплей с фоткой авторов, то есть нас'''
+    
     while authors:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -152,7 +165,7 @@ while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
-            elif event.type == KEYDOWN:
+            elif event.type == KEYDOWN:   #логическое переобозначение, дабы вернуться в меню при нажатии на пробел
                 if event.key == K_SPACE:
                     starting = True
                     authors = False
