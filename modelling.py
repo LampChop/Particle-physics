@@ -18,6 +18,8 @@ def adjacent_segments(p1, p2):
     s2 = calculate_segment(p2)
     return(abs(s1[0] - s2[0]) < 2 and abs(s1[1] - s2[1]) < 2)
 def move(particle, dt):
+    """Рассчитывает движение частицы, проверяет столкновение частицы со стенами, корректирует движение после столкновения."""
+
     # print(calculate_segment(particle))
     ax = particle.Fx / particle.mass
     ay = particle.Fy / particle.mass
@@ -42,6 +44,8 @@ def move(particle, dt):
     #         particle.color[i] += 1
 
 def check_collision(p1, p2):
+    """Проверяет столкновение частиц друг с другом, корректирует их движение после столкновения."""
+
     #print(adjacent_segments(p1, p2))
     if(adjacent_segments(p1, p2)):
         dx = p2.x - p1.x
@@ -86,6 +90,8 @@ def check_collision(p1, p2):
 
 
 def calculate_force(particle, particles):
+    """Рассчитывает проекции на оси x и y силы, действующей на тело со стороны других тел."""
+
     particle.Fx = particle.Fy = 0
 
     for obj in particles:
@@ -100,13 +106,19 @@ def calculate_force(particle, particles):
             particle.Fy += F * sin
 
 def calculate_magnet_force(body, field):
+    """Рассчитывает проекии на оси x и y силы со стороны магнитного поля, действующую на тело."""
+
     body.Fx += body.q*(body.vy/scale_factor)*(field.tesla*field.orient)
     body.Fy -= body.q*(body.vx/scale_factor)*(field.tesla*field.orient)
 
 def calculate_e_force(body, e_field):
+    """Рассчитывает силу со стороны электрического поля, действующую на тело."""
+
     body.Fx += body.q * e_field.orient * e_field.e
 
 def recalculate_particles_positions(particles, field, e_field, dt):
+    """Делает так, чтобы силы, действующие на тело, влияли на его движение."""
+
     for particle in particles:
         calculate_force(particle, particles)
         calculate_magnet_force(particle, field)
