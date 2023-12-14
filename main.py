@@ -29,6 +29,7 @@ authors = True
 cat = True
 
 field = magnet_field(0, 0)
+e_field = E_field(0, 0)
 
 menu = Menu()
 menu.append_option('Начать', lambda: print('Si'))
@@ -100,6 +101,15 @@ while running:
                 if event.key == K_d:
                     field.orient = 0
                     field.tesla = 0
+                if event.key == K_c:
+                    e_field.orient = 1
+                    e_field.e = 10
+                if event.key == K_z:
+                    e_field.orient = -1
+                    e_field.e = 10
+                if event.key == K_a:
+                    e_field.orient = 0
+                    e_field.e = 0
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     mouse_pos = event.pos
@@ -113,11 +123,12 @@ while running:
                         particles.append(
                             particle(mouse_pos[0]*scale_factor, mouse_pos[1]*scale_factor, rnd.choice(x_velocities)*scale_factor, rnd.choice(y_velocities)*scale_factor,
                                      r, mass, 0 if neutral else charge, None, 0, 0))
-        recalculate_particles_positions(particles, field, 0.001)
+        recalculate_particles_positions(particles, field, e_field, 0.001)
         field.draw(screen)
+        e_field.draw(screen)
 
     while cat:
-        screen.blit(background_image_1, (0, 54))
+        screen.blit(background_image_1, (0, 0))
         pygame.display.update()
 
         for event in pygame.event.get():
