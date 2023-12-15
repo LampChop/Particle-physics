@@ -29,6 +29,8 @@ slider3knob = pygame.Rect(65, -15, 20, 70)
 slider_electric_field = slider(screen, 50 + window_width - ui_width, 355, 150, 40, grey, dark_grey, 28, "Electric field", slider3knob)
 slider4knob = pygame.Rect(65, -15, 20, 70)
 slider_magnetic_field = slider(screen, 50 + window_width - ui_width, 450, 150, 40, grey, dark_grey, 28, "Magnetic field", slider4knob)
+slider5knob = pygame.Rect(65, -15, 20, 70)
+slider_atomic_force = slider(screen, 50 + window_width - ui_width, 545, 150, 40, grey, dark_grey, 28, "Atomic force", slider5knob)
 background_image_1 = pygame.image.load('шлепа.jpg')
 background_image_2 = pygame.image.load('authors.jpg')
 
@@ -83,7 +85,7 @@ while running:
     mouse_down = False
     while game_1:
         pygame.display.update()
-        make_gui(screen, [button_friction], [slider_friction, slider_force, slider_electric_field, slider_magnetic_field])
+        make_gui(screen, [button_friction], [slider_friction, slider_force, slider_electric_field, slider_magnetic_field, slider_atomic_force])
         for p in particles:
             p.draw(screen)
             move(p, 0.05)
@@ -132,6 +134,9 @@ while running:
 
                     if slider_force.is_clicked(event.pos):
                         model_constants.k = 400 * scale_factor * slider_force.value
+
+                    if slider_atomic_force.is_clicked(event.pos):
+                        model_constants.D = 3 * scale_factor ** 3 * slider_atomic_force.value
 
                     if slider_electric_field.is_clicked(event.pos):
                         slider_electric_field.value = int((slider_electric_field.value * 10) + 0.5) / 10
