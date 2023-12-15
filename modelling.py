@@ -1,7 +1,6 @@
 from visualization import *
 import math
 import numpy as np
-k = 100
 
 class physical_constants:
     def __init__(self, k, friction, friction_on, e, D):
