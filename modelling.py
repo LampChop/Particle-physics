@@ -2,22 +2,18 @@ from visualization import *
 import math
 import numpy as np
 
-class physical_constants:
+class physical_constants: 
     def __init__(self, k, friction, friction_on, e, D):
         self.k = k
         self.friction = friction
         self.friction_on = friction_on
         self.e = e
-        self.D = D
+        self.D = D # величина атомарной силы
 
 
 model_constants = physical_constants(100 * scale_factor, 0.0001, True, 1, scale_factor ** 3)
-re = 10 * scale_factor  # радиус, на котором отталкивание переходит в притяжение # величина атомарной силы
+re = 10 * scale_factor  # радиус, на котором отталкивание переходит в притяжение (сила ноль)
 a = 1 / scale_factor  # чем больше, тем близкодейственнее
-segments_division = 1
-segments = [[j for j in range(segments_division)] for i in range(segments_division)]
-segment_width = (window_width - ui_width) / segments_division * scale_factor
-segment_height = window_height / segments_division * scale_factor
 
 
 def calculate_segment(p): # Нереализованная до конца оптимизация
@@ -62,48 +58,47 @@ def move(particle, dt):
 
 def check_collision(p1, p2):
     # print(adjacent_segments(p1, p2))
-    if (adjacent_segments(p1, p2)):
-        dx = p2.x - p1.x
-        dy = p2.y - p1.y
-        distance = math.sqrt(dx * dx + dy * dy)
-        if distance < (p1.r + p2.r) / 2 and distance != 0:
-            # print(p1.x, 'collision')
-            nx = dx / distance
-            ny = dy / distance
-            relative_velocity = [p2.vx - p1.vx, p2.vy - p1.vy]
-            vel_along_normal = relative_velocity[0] * nx + relative_velocity[1] * ny
+    dx = p2.x - p1.x
+    dy = p2.y - p1.y
+    distance = math.sqrt(dx * dx + dy * dy)
+    if distance < (p1.r + p2.r) / 2 and distance != 0:
+        # print(p1.x, 'collision')
+        nx = dx / distance
+        ny = dy / distance
+        relative_velocity = [p2.vx - p1.vx, p2.vy - p1.vy]
+        vel_along_normal = relative_velocity[0] * nx + relative_velocity[1] * ny
 
-            if vel_along_normal > 0:
-                # Частицы летят в разные стороны и все норм
-                return
+        if vel_along_normal > 0:
+            # Частицы летят в разные стороны и все норм
+            return
 
-            j = -(1 + model_constants.e) * vel_along_normal
-            j /= 1 / p1.mass + 1 / p2.mass
+        j = -(1 + model_constants.e) * vel_along_normal
+        j /= 1 / p1.mass + 1 / p2.mass
 
-            impulse = [j * nx, j * ny]
+        impulse = [j * nx, j * ny]
 
-            p1.vx -= 1 / p1.mass * impulse[0]
-            p1.vy -= 1 / p1.mass * impulse[1]
-            p2.vx += 1 / p2.mass * impulse[0]
-            p2.vy += 1 / p2.mass * impulse[1]
+        p1.vx -= 1 / p1.mass * impulse[0]
+        p1.vy -= 1 / p1.mass * impulse[1]
+        p2.vx += 1 / p2.mass * impulse[0]
+        p2.vy += 1 / p2.mass * impulse[1]
 
-            # Разъединяем частицы чтобы они не слиплись, массивные частицы более инертны
-            m1 = p1.mass
-            m2 = p2.mass
-            k1 = m2 / (m1 + m2)
-            k2 = m1 / (m1 + m2)
-            overlap = (p1.r + p2.r) / 2 - distance
-            p1.x -= overlap * k1 * nx
-            p1.y -= overlap * k1 * ny
-            p2.x += overlap * k2 * nx
-            p2.y += overlap * k2 * ny
+        # Разъединяем частицы чтобы они не слиплись, массивные частицы более инертны
+        m1 = p1.mass
+        m2 = p2.mass
+        k1 = m2 / (m1 + m2)
+        k2 = m1 / (m1 + m2)
+        overlap = (p1.r + p2.r) / 2 - distance
+        p1.x -= overlap * k1 * nx
+        p1.y -= overlap * k1 * ny
+        p2.x += overlap * k2 * nx
+        p2.y += overlap * k2 * ny
 
 
 def calculate_force(particle, particles):
     particle.Fx = particle.Fy = 0
 
     for obj in particles:
-        if particle != obj and adjacent_segments(particle, obj):
+        if particle != obj:
             r = ((particle.x - obj.x) ** 2 + (particle.y - obj.y) ** 2) ** 0.5 + scale_factor / 2
             dx = obj.x - particle.x
             dy = obj.y - particle.y
