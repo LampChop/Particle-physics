@@ -68,7 +68,3 @@ def make_gui(screen, buttons, sliders):
         button.show(screen)
     for slider in sliders:
         slider.show(screen)
-
-    slider_font = pygame.font.Font(None, 36)
-    slider_text = slider_font.render("Slider", True, black_text)
-    screen.blit(slider_text, (115, 210))
