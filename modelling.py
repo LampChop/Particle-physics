@@ -1,19 +1,19 @@
 from visualization import *
 import math
 import numpy as np
-
+k = 100
 
 class physical_constants:
-    def __init__(self, k, friction, friction_on, e):
+    def __init__(self, k, friction, friction_on, e, D):
         self.k = k
         self.friction = friction
         self.friction_on = friction_on
         self.e = e
+        self.D = D
 
 
-model_constants = physical_constants(100 * scale_factor, 0.0001, True, 0.95)
-re = 10 * scale_factor  # радиус, на котором отталкивание переходит в притяжение
-D = 3 * scale_factor ** 3  # величина атомарной силы
+model_constants = physical_constants(100 * scale_factor, 0.0001, True, 1, scale_factor ** 3)
+re = 10 * scale_factor  # радиус, на котором отталкивание переходит в притяжение # величина атомарной силы
 a = 1 / scale_factor  # чем больше, тем близкодейственнее
 segments_division = 1
 segments = [[j for j in range(segments_division)] for i in range(segments_division)]
@@ -111,7 +111,7 @@ def calculate_force(particle, particles):
             sin = dy / r
             cos = dx / r
             F = scale_factor ** 3 * (-1 * model_constants.k * particle.q * obj.q) / (r ** 2)
-            F_atom = 2 * D * (1 - np.exp(-a * (r - re))) * a * np.exp(-a * (r - re))
+            F_atom = 2 * model_constants.D * (1 - np.exp(-a * (r - re))) * a * np.exp(-a * (r - re))
             if F_atom > 0:
                 F += F_atom
             particle.Fx += F * cos
