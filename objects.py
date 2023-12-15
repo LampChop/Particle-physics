@@ -1,5 +1,6 @@
 from visualization import *
 import pygame as pg
+import numpy as np
 class particle:
     """Класс частицы."""
 
@@ -10,7 +11,7 @@ class particle:
         оси x и y, ее радиус, массу, заряд, цвет и проекции сил на оси x и y.
         Если заряд частицы больше нуля, ее цвет красный, меньше нуля -- синий,
         равен нулю -- белый.
-        
+
         """
 
         self.x = x
@@ -21,7 +22,6 @@ class particle:
         red = [220, 20, 60]
         blue = [70, 130, 180]
         white = [255, 255, 255]
-
 
         if color is None:
             if q > 0:
@@ -48,18 +48,18 @@ class particle:
         )
 
 
-class magnet_field:
+class magnetic_field:
     """Класс магнитного поля."""
 
-    def __init__(self, tesla, orient):
+    def __init__(self, magnetic_field_value):
         """Функция инициализации."""
 
-        """Принимает на вход значение индукции магнитного поля и его ориентацию.
-        
+        """Принимает на вход значение индукции магнитного поля.
+
         """
 
-        self.tesla = tesla
-        self.orient = orient
+        self.field_value = magnetic_field_value
+        self.orient = np.sign(magnetic_field_value)
 
     def draw(self, screen):
         """Рисует направление вектора магнитной индукции."""
@@ -87,18 +87,18 @@ class magnet_field:
             pass
 
 
-class E_field:
+class electric_field:
     """Класс электрического поля."""
 
-    def __init__(self, e, orient):
+    def __init__(self, electric_field_value):
         """Функция инициализации."""
 
         """Принимает на вход значение напряженности электрического поля.
-        
+
         """
 
-        self.e = e
-        self.orient = orient
+        self.field_value = electric_field_value
+        self.orient = np.sign(electric_field_value)
 
     def draw(self, screen):
         """Рисует направление вектора напряженности электрического поля."""
