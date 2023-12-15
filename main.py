@@ -137,7 +137,7 @@ while running:
                         slider_electric_field.value = int((slider_electric_field.value * 10) + 0.5) / 10
                         slider_electric_field.knob_rect.topleft = (slider_electric_field.value * slider_electric_field.width - 10,
                         slider_electric_field.knob_rect.topleft[1])
-                        e_field.field_value = (slider_electric_field.value - 0.5) * 40
+                        e_field.field_value = (slider_electric_field.value - 0.5) * 100
                         e_field.orient = np.sign(e_field.field_value)
 
                     if slider_magnetic_field.is_clicked(event.pos):
@@ -145,7 +145,7 @@ while running:
                         slider_magnetic_field.knob_rect.topleft = (
                             slider_magnetic_field.value * slider_magnetic_field.width - 10,
                             slider_magnetic_field.knob_rect.topleft[1])
-                        m_field.field_value = (slider_magnetic_field.value - 0.5) * 40
+                        m_field.field_value = (slider_magnetic_field.value - 0.5) * 100
                         m_field.orient = np.sign(m_field.field_value)
 
             elif event.type == pygame.MOUSEBUTTONUP:
