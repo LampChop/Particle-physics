@@ -2,7 +2,8 @@ import pygame
 import numpy as np
 import random as rnd
 from visualization import *
-from objects import *
+from particle import *
+from fields import *
 from modelling import *
 from menu import *
 from gui import *
