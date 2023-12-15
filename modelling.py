@@ -1,5 +1,3 @@
-from typing import Any
-
 from visualization import *
 import math
 import numpy as np
