@@ -20,13 +20,13 @@ segment_width = (window_width - ui_width) / segments_division * scale_factor
 segment_height = window_height / segments_division * scale_factor
 
 
-def calculate_segment(p):
+def calculate_segment(p): # Нереализованная до конца оптимизация
     i = int(p.x / segment_width)
     j = int(p.y / segment_height)
     return [i, j]
 
 
-def adjacent_segments(p1, p2):
+def adjacent_segments(p1, p2): # Нереализованная до конца оптимизация
     s1 = calculate_segment(p1)
     s2 = calculate_segment(p2)
     return abs(s1[0] - s2[0]) < 2 and abs(s1[1] - s2[1]) < 2
