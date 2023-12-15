@@ -2,8 +2,18 @@ from typing import Any
 
 from visualization import *
 import math
-k = 50
+class physical_constants:
+    def __init__(self, k, friction, friction_on, e):
+        self.k = k
+        self.friction = friction
+        self.friction_on = friction_on
+        self.e = e
 
+
+model_constants = physical_constants(100 * scale_factor, 0.0001, True, 0.95)
+re = 10 * scale_factor  # радиус, на котором отталкивание переходит в притяжение
+D = 3 * scale_factor ** 3  # величина атомарной силы
+a = 1 / scale_factor  # чем больше, тем близкодейственнее
 segments_division = 1
 segments = [[j for j in range(segments_division)] for i in range(segments_division)]
 segment_width = window_width/segments_division*scale_factor
@@ -102,6 +112,9 @@ def calculate_force(particle, particles):
             sin = dy / r
             cos = dx / r
             F = scale_factor**3 * (-1 * k * particle.q * obj.q) / (r ** 2)
+            F_atom = 2 * D * (1 - np.exp(-a * (r - re))) * a * np.exp(-a * (r - re))
+            if F_atom > 0:
+                F += F_atom
             particle.Fx += F * cos
             particle.Fy += F * sin
 
