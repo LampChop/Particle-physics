@@ -99,24 +99,26 @@ while running:
                     game_1 = False
                     authors = False
                     cat = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                mouse_down = True
-                if event.pos[0] < window_width - ui_width:
-                    if event.button == 1 or event.button == 2 or event.button == 3:
-                        mouse_pos = event.pos
-                        for i in range(bunch):  # сколько частиц фигачим за раз
-                            mass = rnd.choice(radii)
-                            r = mass*scale_factor
-                            if event.button == 1:
-                                charge = rnd.choice(charges_positive)
-                            if event.button == 2:
-                                charge = 0
-                            if event.button == 3:
-                                charge = rnd.choice(charges_negative)
-                            particles.append(
-                                particle(mouse_pos[0]*scale_factor, mouse_pos[1]*scale_factor, rnd.choice(x_velocities)*scale_factor, rnd.choice(y_velocities)*scale_factor,
-                                         r, mass, 0 if neutral else charge, None, 0, 0))  # создаем частицу и кладем в массив
-                else:
+            if event.type == pygame.MOUSEBUTTONDOWN or event.type == MOUSEMOTION:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    mouse_down = True
+                    if event.pos[0] < window_width - ui_width:
+
+                        if event.button == 1 or event.button == 2 or event.button == 3:
+                            mouse_pos = event.pos
+                            for i in range(bunch):  # сколько частиц фигачим за раз
+                                mass = rnd.choice(radii)
+                                r = mass*scale_factor
+                                if event.button == 1:
+                                    charge = rnd.choice(charges_positive)
+                                if event.button == 2:
+                                    charge = 0
+                                if event.button == 3:
+                                    charge = rnd.choice(charges_negative)
+                                particles.append(
+                                    particle(mouse_pos[0]*scale_factor, mouse_pos[1]*scale_factor, rnd.choice(x_velocities)*scale_factor, rnd.choice(y_velocities)*scale_factor,
+                                             r, mass, 0 if neutral else charge, None, 0, 0))  # создаем частицу и кладем в массив
+                if mouse_down:
                     if button_friction.is_clicked(event.pos):
                         model_constants.friction_on = not model_constants.friction_on
                         if model_constants.friction_on:
@@ -145,29 +147,9 @@ while running:
                         m_field.field_value = (slider_magnetic_field.value - 0.5) * 40
                         m_field.orient = np.sign(m_field.field_value)
 
-
-
             elif event.type == pygame.MOUSEBUTTONUP:
                 mouse_down = False
-            elif event.type == pygame.MOUSEMOTION:
-                if mouse_down:
-                    if slider_friction.is_clicked(event.pos):
-                        model_constants.friction = 0.001*slider_friction.value
-                    if slider_force.is_clicked(event.pos):
-                        model_constants.k = 400 * scale_factor * slider_force.value
-                    if slider_electric_field.is_clicked(event.pos):
-                        slider_electric_field.value = int((slider_electric_field.value * 10) + 0.5) / 10
-                        slider_electric_field.knob_rect.topleft = (slider_electric_field.value*slider_electric_field.width - 10,
-                                                                   slider_electric_field.knob_rect.topleft[1])
-                        e_field.field_value = (slider_electric_field.value - 0.5) * 40
-                        e_field.orient = np.sign(e_field.field_value)
-                    if slider_magnetic_field.is_clicked(event.pos):
-                        slider_magnetic_field.value = int((slider_magnetic_field.value * 10) + 0.5) / 10
-                        slider_magnetic_field.knob_rect.topleft = (
-                        slider_magnetic_field.value * slider_magnetic_field.width - 10,
-                        slider_magnetic_field.knob_rect.topleft[1])
-                        m_field.field_value = (slider_magnetic_field.value - 0.5) * 40
-                        m_field.orient = np.sign(m_field.field_value)
+
 
         recalculate_particles_positions(particles, m_field, e_field, 0.001)
         e_field.draw(screen)
