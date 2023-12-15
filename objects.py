@@ -1,5 +1,5 @@
 from visualization import *
-
+import pygame as pg
 class particle:
     """Класс частицы."""
 
